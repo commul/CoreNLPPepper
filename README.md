@@ -48,4 +48,4 @@ Require-Capability: osgi.ee; filter="(&(..."
 
 ### Out of memory:
 
-Core NLP consumes a lot of memory, you are likely to run into java.lang.OutOfMemoryError: GC overhead limit exceeded
+If you ask for named entity recognition, you are likely to run into java.lang.OutOfMemoryError: GC overhead limit exceeded, because Core NLP consumes a lot of memory. 

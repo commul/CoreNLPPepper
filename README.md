@@ -3,6 +3,14 @@
 
 ## Stanford Core NLP integrated into a Pepper module (into the pom.xml and into the manipulator)
 
+### Make sure the version of Pepper indicated in the pom.xml in CoreNLPPepper is the same as the version of Pepper you have on  your computer:
+
+<parent>
+	<groupId>org.corpus-tools</groupId>
+	<artifactId>pepper-parentModule</artifactId>
+	**<version>3.1.0</version>**
+</parent>
+
 
 ### To compile:
 
@@ -22,7 +30,7 @@ Start Pepper.
 
 ### Tip:
 
-If I have an error message when launching Pepper, I have to remove the following paragraph from MANIFEST.MF in the SNAPSHOT.jar in the target directory:
+If I have an error message when launching Pepper, I have to remove the following paragraph from MANIFEST.MF in the SNAPSHOT.jar in the target directory in CoreNLPPepper:
 
 Require-Capability: osgi.ee; filter="(&(..."
 

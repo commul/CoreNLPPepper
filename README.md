@@ -5,12 +5,13 @@
 
 ### Make sure the version of Pepper indicated in the pom.xml in CoreNLPPepper is the same as the version of Pepper you have on  your computer:
 
+```
 <parent>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper-parentModule</artifactId>
 	**<version>3.1.0</version>**
 </parent>
-
+```
 
 ### To compile:
 

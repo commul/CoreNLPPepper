@@ -9,7 +9,7 @@
 <parent>
 	<groupId>org.corpus-tools</groupId>
 	<artifactId>pepper-parentModule</artifactId>
-	**<version>3.1.0</version>**
+	<version>3.1.0</version>
 </parent>
 ```
 

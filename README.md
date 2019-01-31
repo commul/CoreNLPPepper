@@ -19,6 +19,8 @@ In the CoreNLPPepper project folder execute:
 
 mvn clean install assembly:single
 
+(This may take quite some time.)
+
 And maybe also: mvn dependency:copy-dependencies (not sure)
 
 

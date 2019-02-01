@@ -28,7 +28,7 @@ mvn dependency:copy-dependencies
 
 ### To integrate into Pepper:
 
-In the file pepper/conf/pepper.properties add the path to the target directory of the project (and maybe also to the dependency subdirectory of the target directory, I'm not sure) into pepper.dropin.paths
+In the file pepper/conf/pepper.properties add the path to the target directory of the project (and after adding new dependencies to pom.xml also to the dependency subdirectory of the target directory) into pepper.dropin.paths
 
 Start Pepper.
 

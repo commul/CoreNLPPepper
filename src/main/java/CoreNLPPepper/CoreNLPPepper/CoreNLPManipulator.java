@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Component;
 
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import eu.fbk.dh.tint.runner.TintPipeline;
+//import eu.fbk.dh.tint.runner.TintPipeline;
 
 import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.ling.*;
@@ -45,6 +45,7 @@ import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
+import edu.stanford.nlp.util.StringUtils;
 import java.util.*;
 
 /**
@@ -52,8 +53,8 @@ import java.util.*;
  * Therefore it just prints out some information about a corpus like the number
  * of nodes, edges and for instance annotation frequencies. <br/>
  * This class can be used as a template for an own implementation of a
- * {@link PepperManipulator} Take a look at the TODO's and adapt the code.
- * If this is the first time, you are implementing a Pepper module, we strongly
+ * {@link PepperManipulator} Take a look at the TODO's and adapt the code. If
+ * this is the first time, you are implementing a Pepper module, we strongly
  * recommend, to take a look into the 'Developer's Guide for Pepper modules',
  * you will find on
  * <a href="http://corpus-tools.org/pepper/">http://corpus-tools.org/pepper</a>.
@@ -134,98 +135,15 @@ public class CoreNLPManipulator extends PepperManipulatorImpl {
 		 */
 		@Override
 		public DOCUMENT_STATUS mapSDocument() {
-			/*
-			String[] englishArgs = new String[]{"-file", "/home/nadiushka/pepper/CoreNLPPepper/sample-english.txt", "-outputFormat", "text", "-props", "/home/nadiushka/pepper/CoreNLPPepper/english.properties"};
-			try {
-				StanfordCoreNLP.main(englishArgs);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
 			
-			// creates a StanfordCoreNLP object, with POS tagging, lemmatization, NER, parsing, and coreference resolution
-	        Properties props = new Properties();
-	        props.setProperty("annotators", "tokenize, ssplit, pos, lemma");
-	        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
-	        // read some text in the text variable
-	        String text = "This is a test of the Stanford CoreNLP Code. Stanford makes some interesting code!";
-
-	        // create an empty Annotation just with the given text
-	        Annotation document = new Annotation(text);
-
-	        // run all Annotators on this text
-	        pipeline.annotate(document);
-		System.out.println("Almost done!!");
-	 	// demonstrate typical usage
-
-		ArrayList<String> textList = new ArrayList<String>();
-		ArrayList<String> posList = new ArrayList<String>();
-		ArrayList<String> lemmaList = new ArrayList<String>();
-		
-		for (CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)) {
-	 	    // get the tree for the sentence
-	 	    Tree tree = sentence.get(TreeAnnotation.class);
-	 	    // get the tokens for the sentence and iterate over them
-	 	    for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-	 	        // get token attributes
-	 	        String tokenText = token.get(TextAnnotation.class);
-	 	        String tokenPOS = token.get(PartOfSpeechAnnotation.class);
-	 	        String tokenLemma = token.get(LemmaAnnotation.class);
-
-		        textList.add(tokenText);
-		        posList.add(tokenPOS);
-		        lemmaList.add(tokenLemma);
-		    }
-		}
-		
-		System.out.println("");
-		System.out.println("Input text: " + text);
-		System.out.println("Parsed text:");
-		System.out.println(textList);
-		System.out.println("Parts of Speach:");
-		System.out.println(posList);
-		System.out.println("Lemma Annotation:");
-		System.out.println(lemmaList);
+			//testStanfordEnglish();
 			
-			/*
-			// Initialize the Tint pipeline
-			TintPipeline pipeline = new TintPipeline();
+			testStanfordGerman();
 
-			// Load the default properties
-			// see https://github.com/dhfbk/tint/blob/master/tint-runner/src/main/resources/default-config.properties
-			try {
-				pipeline.loadDefaultProperties();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			//testStanfordItalian();
 
-			// Add a custom property
-			// pipeline.setProperty("my_property", "my_value");
 
-			// Load the models
-			pipeline.load();
-
-			// Use for example a text in a String
-			String text = "I topi non avevano nipoti.";
-
-			// Get the original Annotation (Stanford CoreNLP)
-			Annotation stanfordAnnotation = pipeline.runRaw(text);
-			
-			System.out.println(stanfordAnnotation);
-			
-			// **or**
-
-			// Get the JSON
-			// (optionally getting the original Stanford CoreNLP Annotation as return value)
-			//InputStream stream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
-			//Annotation annotation = pipeline.run(stream, System.out, TintRunner.OutputFormat.JSON);
-			
-			*/
-			
-			
 			// create a StringBuilder, to be filled with informations (we need
 			// to intermediately store the results, because of parallelism of
 			// modules)
@@ -262,7 +180,8 @@ public class CoreNLPManipulator extends PepperManipulatorImpl {
 			// uniqueness, in case of one class uses multiple traversals. This
 			// object then takes the call-backs implemented with methods
 			// checkConstraint, nodeReached and nodeLeft
-			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST, "CoreNLPTraversal", this);
+			getDocument().getDocumentGraph().traverse(roots, GRAPH_TRAVERSE_TYPE.TOP_DOWN_DEPTH_FIRST,
+					"CoreNLPTraversal", this);
 
 			// print out computed frequencies
 			for (Map.Entry<String, Integer> entry : frequencies.entrySet()) {
@@ -273,6 +192,128 @@ public class CoreNLPManipulator extends PepperManipulatorImpl {
 			System.out.println(out.toString());
 
 			return (DOCUMENT_STATUS.COMPLETED);
+		}
+		
+		/**
+		 * tests Stanford Core NLP parser for German
+		 */
+		public void testStanfordGerman(){
+			String sampleGermanText = "Für das Deutsche, beispielsweise, werden Tokenisierung und Lemmatisierung nicht unterstützt.";
+	        Annotation germanAnnotation = new Annotation(sampleGermanText);
+	        Properties germanProperties = StringUtils.argsToProperties(
+	                new String[]{"-props", "StanfordCoreNLP-german.properties"});
+	        StanfordCoreNLP pipeline = new StanfordCoreNLP(germanProperties);
+	        pipeline.annotate(germanAnnotation);
+	        for (CoreMap sentence : germanAnnotation.get(CoreAnnotations.SentencesAnnotation.class)) {
+	            Tree sentenceTree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+	            System.out.println(sentenceTree);
+	        }
+		}
+
+		/**
+		 * tests Stanford Core NLP parser for Italian
+		 */
+		/*public void testStanfordItalian(){
+			// Initialize the Tint pipeline
+			TintPipeline pipelineTint = new TintPipeline();
+
+			// Load the default properties
+			// see https://github.com/dhfbk/tint/blob/master/tint-runner/src/main/resources/default-config.properties
+			try {
+				pipelineTint.loadDefaultProperties();
+			}
+			catch (IOException e) { //TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// Add a custom property
+			// pipeline.setProperty("my_property","my_value");
+
+			// Load the models pipeline.load();
+
+			// Use for example a text in a String
+			String textItalian = "I topi non avevano nipoti.";
+
+			// Get the original Annotation (Stanford CoreNLP)
+			Annotation stanfordAnnotation = pipelineTint.runRaw(textItalian);
+
+			System.out.println(textItalian);
+			System.out.println(stanfordAnnotation);
+
+			// **or**
+
+			// Get the JSON // (optionally getting the original Stanford CoreNLP Annotation as return value)
+			//InputStream stream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+			//Annotation annotation = pipeline.run(stream, System.out, TintRunner.OutputFormat.JSON);
+		}*/
+
+
+		/**
+		 * tests Stanford Core NLP parser for English
+		 */
+		public void testStanfordEnglish() {
+			/*
+			 * String[] englishArgs = new String[]{"-file",
+			 * "/home/nadiushka/pepper/CoreNLPPepper/sample-english.txt",
+			 * "-outputFormat", "text", "-props",
+			 * "/home/nadiushka/pepper/CoreNLPPepper/english.properties"}; try {
+			 * StanfordCoreNLP.main(englishArgs); } catch (IOException e) { //
+			 * TODO Auto-generated catch block e.printStackTrace(); }
+			 */
+			
+			
+			// creates a StanfordCoreNLP object, with POS tagging,
+			// lemmatization, NER, parsing, and coreference resolution
+			Properties props = new Properties();
+			//props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
+			props.setProperty("annotators", "tokenize, ssplit, pos, lemma");
+			StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+			// read some text in the text variable
+			String text = "This is a test of the Stanford CoreNLP Code. Stanford makes some interesting code!";
+
+			// create an empty Annotation just with the given text
+			Annotation document = new Annotation(text);
+
+			// run all Annotators on this text
+			pipeline.annotate(document);
+			System.out.println("Almost done!!");
+			// demonstrate typical usage
+
+			ArrayList<String> textList = new ArrayList<String>();
+			ArrayList<String> posList = new ArrayList<String>();
+			ArrayList<String> lemmaList = new ArrayList<String>();
+			//ArrayList<String> namedList = new ArrayList<String>();
+
+			for (CoreMap sentence : document.get(CoreAnnotations.SentencesAnnotation.class)) {
+				// get the tree for the sentence
+				Tree tree = sentence.get(TreeAnnotation.class);
+				// get the tokens for the sentence and iterate over them
+				for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+					// get token attributes
+					String tokenText = token.get(TextAnnotation.class);
+					String tokenPOS = token.get(PartOfSpeechAnnotation.class);
+					String tokenLemma = token.get(LemmaAnnotation.class);
+					//String tokenNE = token.get(NamedEntityTagAnnotation.class);
+
+					textList.add(tokenText);
+					posList.add(tokenPOS);
+					lemmaList.add(tokenLemma);
+					//namedList.add(tokenNE);
+				}
+			}
+
+			System.out.println("");
+			System.out.println("Input text: " + text);
+			System.out.println("Parsed text:");
+			System.out.println(textList);
+			System.out.println("Parts of Speach:");
+			System.out.println(posList);
+			System.out.println("Lemma Annotation:");
+			System.out.println(lemmaList);
+			//System.out.println("Named Entity:");
+			//System.out.println(namedList);
+
 		}
 
 		/** A map storing frequencies of annotations of processed documents. */
@@ -286,7 +327,8 @@ public class CoreNLPManipulator extends PepperManipulatorImpl {
 		 * annotations.
 		 */
 		@Override
-		public void nodeReached(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation sRelation, SNode fromNode, long order) {
+		public void nodeReached(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode,
+				SRelation sRelation, SNode fromNode, long order) {
 			if (currNode.getAnnotations().size() != 0) {
 				// step through all annotations to collect them in frequencies
 				// table
@@ -310,7 +352,8 @@ public class CoreNLPManipulator extends PepperManipulatorImpl {
 		 * In our dummy implementation, this method is not used.
 		 */
 		@Override
-		public void nodeLeft(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation edge, SNode fromNode, long order) {
+		public void nodeLeft(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SNode currNode, SRelation edge,
+				SNode fromNode, long order) {
 		}
 
 		/**
@@ -323,7 +366,8 @@ public class CoreNLPManipulator extends PepperManipulatorImpl {
 		 * the nodes {@link STextualDS}.
 		 */
 		@Override
-		public boolean checkConstraint(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SRelation edge, SNode currNode, long order) {
+		public boolean checkConstraint(GRAPH_TRAVERSE_TYPE traversalType, String traversalId, SRelation edge,
+				SNode currNode, long order) {
 			if (currNode instanceof STextualDS) {
 				return (false);
 			} else {

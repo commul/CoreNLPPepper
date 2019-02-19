@@ -74,11 +74,51 @@
 			<version>3.9.2</version>
 			<classifier>models-english-kbp</classifier>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>eu.fbk.dh</groupId>
 			<artifactId>tint-runner</artifactId>
 			<version>0.2</version>
 		</dependency>
+		<dependency>
+            <groupId>eu.fbk.dh</groupId>
+            <artifactId>tint-tokenizer</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.fbk.dh</groupId>
+            <artifactId>tint-digimorph-annotator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.fbk.dh</groupId>
+            <artifactId>tint-digimorph</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.fbk.dh</groupId>
+            <artifactId>tint-heideltime-annotator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        https://mvnrepository.com/artifact/eu.fbk.utils/utils-core
+<dependency>
+    <groupId>eu.fbk.utils</groupId>
+    <artifactId>utils-core</artifactId>
+    <version>3.1.1</version>
+</dependency>
+https://mvnrepository.com/artifact/org.ahocorasick/ahocorasick
+<dependency>
+    <groupId>org.ahocorasick</groupId>
+    <artifactId>ahocorasick</artifactId>
+    <version>0.4.0</version>
+</dependency> -->
+
+<!-- https://mvnrepository.com/artifact/com.sun.activation/javax.activation -->
+<dependency>
+    <groupId>com.sun.activation</groupId>
+    <artifactId>javax.activation</artifactId>
+    <version>1.2.0</version>
+</dependency>
+
 	</dependencies>
 
 	<build>
@@ -96,6 +136,13 @@
 						<Export-Package>
 							edu.stanford.nlp.*; version="3.9.2",
 						</Export-Package>
+						<!-- <Export-Package>
+							edu.stanford.nlp.*; version="3.9.2",
+							eu.fbk.dh.*; version="0.2",
+							eu.fbk.utils.*; version="3.1.1",
+							org.ahocorasick.*; version="0.4.0",
+							com.sun.activation.*; version="1.2.0",
+						</Export-Package> -->
 						<Import-Package>
 							*;resolution:=optional
 						</Import-Package>

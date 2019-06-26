@@ -32,6 +32,8 @@ In the file pepper/conf/pepper.properties add the path to the target directory o
 
 Start Pepper.
 
+Pepper documentation: https://korpling.github.io/pepper/doc/tutorial.html
+
 
 ### Tip:
 
@@ -46,6 +48,16 @@ Require-Capability: osgi.ee; filter="(&(..."
 (And maybe also from 1 of the .jars in the dependency subdirectory of the target directory, if you have the corresponding error message.)
 
 
+If you can't save the modified file in the archive, maybe it's due to absence of free space on you computer, because maven took all of it. In that case you have to do :
+
+mvn dependency:purge-local-repository -DactTransitively=false -DreResolve=false --fail-at-end
+
+
 ### Out of memory:
 
-If you ask for syntactic parsing, you are likely to run into java.lang.OutOfMemoryError: GC overhead limit exceeded, because Core NLP consumes a lot of memory. 
+If you ask for named entity recognition, you are likely to run into java.lang.OutOfMemoryError: GC overhead limit exceeded, because Core NLP consumes a lot of memory. 
+
+
+### What it is capable of doing now:
+
+It does tokenization, sentence splitting, POS-tagging, lemmatization and syntactic parsing for English and German.

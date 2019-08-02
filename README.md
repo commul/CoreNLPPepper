@@ -52,6 +52,8 @@ If you can't save the modified file in the archive, maybe it's due to absence of
 
 mvn dependency:purge-local-repository -DactTransitively=false -DreResolve=false --fail-at-end
 
+Even better: delete the content of the .m2 folder.
+
 
 ### Out of memory:
 
